@@ -42,19 +42,19 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Configurations -->
+  <script src="config.js"></script>
   <!-- Custom JS -->
   <script type="module">
     import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
 
-    // Initialize Supabase
-    const SUPABASE_URL = 'https://ilmufbxfsvyhpaqwdyxg.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlsbXVmYnhmc3Z5aHBhcXdkeXhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTgyNTk3NzcsImV4cCI6MjAzMzgzNTc3N30.XsOwbpsLN4lH6OLGR1J4jdGK-n1kOZOJhXH01MwiyPo';
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // Initialize Supabase using configurations from config.js
+    const supabase = createClient(supabaseConfig.SUPABASE_URL, supabaseConfig.SUPABASE_ANON_KEY);
 
     document.getElementById('login-button').addEventListener('click', async () => {
       console.log('Login button clicked');
       try {
-        const { error } = await supabase.auth.signInWithOAuth({
+        const { user, session, error } = await supabase.auth.signInWithOAuth({
           provider: 'azure',
           options: {
             redirectTo: 'https://ilmufbxfsvyhpaqwdyxg.supabase.co/auth/v1/callback'
@@ -63,6 +63,13 @@
         if (error) {
           console.error('Error during sign-in:', error.message);
           document.getElementById('error-message').textContent = error.message;
+        } else {
+          // Store session and user data in cookies
+          document.cookie = `supabaseSession=${session.access_token}; path=/`;
+          document.cookie = `supabaseUser=${JSON.stringify(user)}; path=/`;
+
+          // Redirect to admin panel or another page on successful login
+          window.location.href = 'admin.html'; // Replace with your admin panel URL
         }
       } catch (error) {
         console.error('Unexpected error:', error);
