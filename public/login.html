@@ -53,4 +53,34 @@
     };
 
     // Login button click event listener
-    document.getElementById('login-button').addEventListener('
+    document.getElementById('login-button').addEventListener('click', async () => {
+      try {
+        // Generate code verifier and challenge for PKCE
+        const codeVerifier = generateRandomString(128);
+        const codeChallenge = await generateCodeChallenge(codeVerifier);
+
+        // Configure Supabase OAuth sign-in with Azure AD
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: 'azure',
+          options: {
+            redirectTo: 'https://vc-tools.netlify.app',
+            pkce: {
+              codeVerifier,
+              codeChallenge,
+            }
+          }
+        });
+
+        // Handle errors during sign-in
+        if (error) {
+          console.error('Error during sign-in:', error.message);
+          document.getElementById('error-message').textContent = error.message;
+        }
+      } catch (error) {
+        console.error('Unexpected error:', error);
+        document.getElementById('error-message').textContent = 'An unexpected error occurred';
+      }
+    });
+  </script>
+</body>
+</html>
