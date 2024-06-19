@@ -63,7 +63,7 @@
         const { error } = await supabase.auth.signInWithOAuth({
           provider: 'azure',
           options: {
-            redirectTo: 'https://vc-tools.netlify.app',
+            redirectTo: 'https://ilmufbxfsvyhpaqwdyxg.supabase.co/auth/v1/callback',
             pkce: {
               codeVerifier,
               codeChallenge,
