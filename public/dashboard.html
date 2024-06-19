@@ -18,7 +18,7 @@
     import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
 
     const SUPABASE_URL = 'https://ilmufbxfsvyhpaqwdyxg.supabase.co';
-    const SUPABASE_ANON_KEY = 'your_supabase_anon_key';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlsbXVmYnhmc3Z5aHBhcXdkeXhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTgyNTk3NzcsImV4cCI6MjAzMzgzNTc3N30.XsOwbpsLN4lH6OLGR1J4jdGK-n1kOZOJhXH01MwiyPo';
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     document.getElementById('logout-button').addEventListener('click', async () => {
