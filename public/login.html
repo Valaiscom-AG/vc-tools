@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Login</h2>
+    <button id="login-button" class="btn btn-primary">Login with Microsoft</button>
+    <p id="error-message" class="text-danger"></p>
+  </div>
+  <script type="module">
+    import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
+
+    const SUPABASE_URL = 'https://ilmufbxfsvyhpaqwdyxg.supabase.co';
+    const SUPABASE_ANON_KEY = 'your_supabase_anon_key';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    document.getElementById('login-button').addEventListener('click', async () => {
+      try {
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: 'azure',
+          options: {
+            redirectTo: 'https://vc-tools.netlify.app/public/dashboard.html'
+          }
+        });
+        if (error) {
+          console.error('Error during sign-in:', error.message);
+          document.getElementById('error-message').textContent = error.message;
+        }
+      } catch (error) {
+        console.error('Unexpected error:', error);
+        document.getElementById('error-message').textContent = 'An unexpected error occurred';
+      }
+    });
+  </script>
+</body>
+</html>

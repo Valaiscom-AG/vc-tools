@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard/Admin</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Dashboard/Admin</h2>
+    <button id="logout-button" class="btn btn-danger">Logout</button>
+  </div>
+  <script type="module">
+    import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
+
+    const SUPABASE_URL = 'https://ilmufbxfsvyhpaqwdyxg.supabase.co';
+    const SUPABASE_ANON_KEY = 'your_supabase_anon_key';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    document.getElementById('logout-button').addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      window.location.href = '/login.html';
+    });
+
+    (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        if (window.location.pathname !== '/login.html') {
+          window.location.href = '/login.html';
+        }
+      } else {
+        if (window.location.pathname === '/login.html') {
+          window.location.href = '/dashboard.html';
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
