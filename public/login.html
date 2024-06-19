@@ -35,8 +35,15 @@
 
     // Function to generate code challenge for PKCE
     const generateCodeChallenge = async (codeVerifier) => {
-      const hashed = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(codeVerifier));
-      return base64urlencode(hashed);
+      try {
+        const hashed = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(codeVerifier));
+        const base64urlencoded = base64urlencode(hashed);
+        console.log('Code challenge:', base64urlencoded);
+        return base64urlencoded;
+      } catch (error) {
+        console.error('Error generating code challenge:', error);
+        document.getElementById('error-message').textContent = 'An error occurred while generating the code challenge';
+      }
     };
 
     // Function to encode Base64 URL
@@ -46,34 +53,4 @@
     };
 
     // Login button click event listener
-    document.getElementById('login-button').addEventListener('click', async () => {
-      try {
-        // Generate code verifier and challenge for PKCE
-        const codeVerifier = generateRandomString(128);
-        const codeChallenge = await generateCodeChallenge(codeVerifier);
-
-        // Configure Supabase OAuth sign-in with Azure AD
-        const { error } = await supabase.auth.signInWithOAuth({
-          provider: 'azure',
-          options: {
-            redirectTo: 'https://vc-tools.netlify.app',
-            pkce: {
-              codeVerifier,
-              codeChallenge,
-            }
-          }
-        });
-
-        // Handle errors during sign-in
-        if (error) {
-          console.error('Error during sign-in:', error.message);
-          document.getElementById('error-message').textContent = error.message;
-        }
-      } catch (error) {
-        console.error('Unexpected error:', error);
-        document.getElementById('error-message').textContent = 'An unexpected error occurred';
-      }
-    });
-  </script>
-</body>
-</html>
+    document.getElementById('login-button').addEventListener('
