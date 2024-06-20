@@ -1,62 +1,132 @@
-// Function to fetch data and populate HTML
-async function populateFromSupabase() {
-    // Initialize Supabase client
-    var supabaseUrl = 'https://ilmufbxfsvyhpaqwdyxg.supabase.co';
-    var supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlsbXVmYnhmc3Z5aHBhcXdkeXhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTgyNTk3NzcsImV4cCI6MjAzMzgzNTc3N30.XsOwbpsLN4lH6OLGR1J4jdGK-n1kOZOJhXH01MwiyPo';
-    var supabase = supabase.createClient(supabaseUrl, supabaseKey);
+document.addEventListener('DOMContentLoaded', async () => {
+    const { createClient } = await import('https://cdn.skypack.dev/@supabase/supabase-js');
+    const supabaseUrl = 'https://ilmufbxfsvyhpaqwdyxg.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlsbXVmYnhmc3Z5aHBhcXdkeXhnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcxODI1OTc3NywiZXhwIjoyMDMzODM1Nzc3fQ.wdL26ds_JBVuEl_6e8TBQxRxa1Pqz2JmLQOlARKHJdE';
 
-    try {
-        // Replace 'apps' with your actual table name in Supabase
-        var { data, error } = await supabase.from('apps').select('*');
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
+    // Function to fetch and render apps
+    async function fetchAndRenderApps() {
+        const { data, error } = await supabase.from('apps').select('*');
         if (error) {
-            throw error;
+            console.error('Error fetching data:', error);
+            return;
         }
 
-        // Select the container where you want to populate the data
-        var container = document.querySelector('.row-cols-1'); // Adjust the selector as per your needs
+        const navContainer = document.getElementById('m-navigation');
+        navContainer.innerHTML = ''; // Clear existing items
 
-        // Iterate over fetched data and populate HTML dynamically
-        data.forEach(item => {
-            var card = document.createElement('div');
-            card.classList.add('col', 'd-flex', 'flex-column', 'gap-2');
+        const appList = document.getElementById('app-list');
+        appList.innerHTML = ''; // Clear existing items
 
-            // Dynamically set the icon (assuming 'icon' field is the URL of an image)
-            var iconDiv = document.createElement('div');
-            iconDiv.classList.add('feature-icon-small', 'd-inline-flex', 'align-items-center', 'justify-content-center', 'text-bg-primary', 'bg-gradient', 'fs-4', 'rounded-3');
-            var iconImg = document.createElement('img');
-            iconImg.src = item.icon; // 'icon' field from Supabase
-            iconDiv.appendChild(iconImg);
+        data.forEach(app => {
+            // Create nav item
+            const navItem = document.createElement('li');
+            navItem.className = 'nav-item';
 
-            // Add iconDiv to card
-            card.appendChild(iconDiv);
+            const navLink = document.createElement('a');
+            navLink.className = 'nav-link active';
+            navLink.href = app.link;
+            navLink.innerHTML = `<img src="${app.icon}" alt="${app.name}" style="width: 16px; height: 16px; margin-right: 8px;"> ${app.name}`;
 
-            // Add title (h4)
-            var title = document.createElement('h4');
-            title.classList.add('fw-semibold', 'mb-0', 'text-body-emphasis');
-            title.textContent = item.name; // 'name' field from Supabase
-            card.appendChild(title);
+            navItem.appendChild(navLink);
+            navContainer.appendChild(navItem);
 
-            // Add description (p)
-            var description = document.createElement('p');
-            description.classList.add('text-body-secondary');
-            description.textContent = item.description; // 'description' field from Supabase
-            card.appendChild(description);
-
-            // Add link (a)
-            var link = document.createElement('a');
-            link.classList.add('btn', 'btn-primary', 'btn-lg');
-            link.textContent = 'Primary button'; // You can customize this text or use 'link' field from Supabase
-            link.href = item.link; // 'link' field from Supabase
-            card.appendChild(link);
-
-            // Append the card to the container
-            container.appendChild(card);
+            // Create list item in modal
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+            listItem.innerHTML = `
+                <span>${app.name}</span>
+                <div>
+                    <button class="btn btn-sm btn-secondary me-2" data-bs-toggle="collapse" data-bs-target="#editcol" aria-expanded="false" aria-controls="editcol" onclick="populateEditForm('${app.id}', '${app.name}', '${app.description}', '${app.link}', '${app.icon}')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteApp('${app.id}')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                        </svg>
+                    </button>
+                </div>
+            `;
+            appList.appendChild(listItem);
         });
-    } catch (error) {
-        console.error('Error fetching data from Supabase:', error.message);
     }
-}
 
-// Call the function to populate data on page load
-populateFromSupabase();
+    // Function to populate edit form fields
+    window.populateEditForm = (id, name, description, link, icon) => {
+        document.getElementById('edit-app-id').value = id;
+        document.getElementById('edit-app-name').value = name;
+        document.getElementById('edit-app-description').value = description;
+        document.getElementById('edit-app-link').value = link;
+        document.getElementById('edit-app-icon').value = icon;
+    };
+
+    // Function to add a new app
+    async function addApp(event) {
+        event.preventDefault();
+
+        const name = document.getElementById('add-app-name').value;
+        const description = document.getElementById('add-app-description').value;
+        const link = document.getElementById('add-app-link').value;
+        const icon = document.getElementById('add-app-icon').value;
+
+        const { data, error } = await supabase.from('apps').insert([{ name, description, link, icon }]);
+        if (error) {
+            console.error('Error adding data:', error);
+            return;
+        }
+
+        fetchAndRenderApps();
+        document.getElementById('add-form').reset();
+    }
+
+    // Attach the addApp function to the form submit event
+    document.getElementById('add-form').addEventListener('submit', addApp);
+
+    // Function to edit an existing app
+    async function editApp(event) {
+        event.preventDefault();
+
+        const id = document.getElementById('edit-app-id').value;
+        const name = document.getElementById('edit-app-name').value;
+        const description = document.getElementById('edit-app-description').value;
+        const link = document.getElementById('edit-app-link').value;
+        const icon = document.getElementById('edit-app-icon').value;
+
+        const { data, error } = await supabase.from('apps').update({ name, description, link, icon }).eq('id', id);
+        if (error) {
+            console.error('Error updating data:', error);
+            return;
+        }
+
+        fetchAndRenderApps();
+        $('#editAppModal').modal('hide'); // Close the modal
+    }
+
+    // Attach the editApp function to the edit-form submit event
+    document.getElementById('edit-form').addEventListener('submit', editApp);
+
+    // Function to delete an app with confirmation
+    window.deleteApp = async (id) => {
+        // Confirm deletion with user
+        const confirmDelete = confirm(`wirklich löschen?`);
+
+        if (!confirmDelete) {
+            return; // If user cancels, do nothing
+        }
+
+        const { data, error } = await supabase.from('apps').delete().eq('id', id);
+        if (error) {
+            console.error('Error deleting data:', error);
+            return;
+        }
+        fetchAndRenderApps();
+    };
+
+
+    // Fetch and render apps on load
+    fetchAndRenderApps();
+});
