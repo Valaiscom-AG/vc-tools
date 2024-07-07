@@ -44,7 +44,6 @@
         <h4 class="fst-italic">Datenbanken</h4>
         <hr>
         <div class="w-25">
-
             <div class="d-flex align-items-start">
                 <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                   <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Mitarbeiter</button>
@@ -55,7 +54,27 @@
                     <div class="tab-pane fade show active overflow-scroll" id="v-pills-home" role="tabpanel"
                         aria-labelledby="v-pills-home-tab" tabindex="0">
                         <p>Mitarbeiter Datenbank</p>
-                        <table class="table table-responsiv table-hover table-striped" style="width: 1500px">
+                        <div class="search-bar mb-3">
+                            <input type="text" id="searchInput" class="form-control w-25" placeholder="Suche..">
+                        </div>
+                        <script>
+                            document.getElementById('searchInput').addEventListener('input', function () {
+                                let filter = this.value.toLowerCase();
+                                let rows = document.querySelectorAll('#empt tbody tr');
+
+                                rows.forEach(row => {
+                                    let cells = row.querySelectorAll('td');
+                                    let match = false;
+                                    cells.forEach(cell => {
+                                        if (cell.innerText.toLowerCase().includes(filter)) {
+                                            match = true;
+                                        }
+                                    });
+                                    row.style.display = match ? '' : 'none';
+                                });
+                            });
+                        </script>
+                        <table class="table table-responsiv table-hover table-striped" style="width: 1580px" id="empt">
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th>
@@ -81,81 +100,153 @@
                                         </th>
                                         </tr>
                                         </thead>
-                            <tbody id="employee-table-body">
-                                <!-- Dynamic employee rows will be generated here -->
-                            </tbody>
-                            </table>
-                        <!-- editnavModal -->
-                        <div class="modal fade" id="manageeModalToggle" aria-hidden="true" tabindex="-1">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="add-employee-form">
-                                            <div class="mb-3">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <input type="text" class="form-control mb-3" id="ae-lastname" required
-                                                            placeholder="LASTNAME">
-                                                    </div>
-                                                    <div class="col">
-                                                        <input type="text" class="form-control mb-3" id="ae-firstname" required
-                                                            placeholder="FIRSTNAME">
-                                                    </div>
+                                    <tbody id="employee-table-body">
+                                        <!-- Dynamic employee rows will be generated here -->
+                                    </tbody>
+                                    </table>
+                                    <!-- editnavModal -->
+                                    <div class="modal fade" id="manageeModalToggle" aria-hidden="true" tabindex="-1">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <select class="form-select mb-3" id="ae-department" aria-label="Department">
-                                                    <option selected>Department</option>
-                                                </select>
-                                                <input type="text" class="form-control mb-3" id="ae-jobtitle" required placeholder="JOBTITLE">
-                                                <input type="text" class="form-control mb-3" id="ae-workdays" required placeholder="WORKDAYS">
-                                                <div class="input-group mb-3">
-                                                    <input type="text" class="form-control" id="ae-email" placeholder="example"
-                                                        aria-label="Email" aria-describedby="email-addon">
-                                                    <span class="input-group-text" id="email-addon">@valaiscom-ag.ch</span>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col form-check">
-                                                        <input class="form-check-input" type="checkbox" id="ae-shareemail">
-                                                        <label class="form-check-label" for="ae-shareemail">
-                                                            SHAREEMAIL
-                                                        </label>
-                                                    </div>
-                                                    <div class="col form-check">
-                                                        <input class="form-check-input" type="checkbox" id="ae-sharemobphone">
-                                                        <label class="form-check-label" for="ae-sharemobphone">
-                                                            SHAREMOBPHONE
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col" style="max-width: 80px;">
-                                                        <input type="text" class="form-control mb-3 text-center" id="ae-intphone" required
-                                                            placeholder="INT" maxlength="2">
-                                                    </div>
-                                                    <div class="col">
-                                                        <div class="input-group mb-3" style="margin-left: -8px;">
-                                                            <span class="input-group-text" id="extphone-addon">027 948 40</span>
-                                                            <input type="text" class="form-control" id="ae-extphone"
-                                                                aria-describedby="extphone-addon" style="max-width: 50px;" maxlength="2"
-                                                                placeholder="EX">
+                                                <div class="modal-body">
+                                                    <form id="add-employee-form">
+                                                        <div class="mb-3">
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <input type="text" class="form-control mb-3" id="ae-lastname" required
+                                                                        placeholder="LASTNAME">
+                                                                </div>
+                                                                <div class="col">
+                                                                    <input type="text" class="form-control mb-3" id="ae-firstname" required
+                                                                        placeholder="FIRSTNAME">
+                                                                </div>
+                                                            </div>
+                                                            <select class="form-select mb-3" id="ae-department" aria-label="Department">
+                                                                <option selected>Department</option>
+                                                            </select>
+                                                            <input type="text" class="form-control mb-3" id="ae-jobtitle" required placeholder="JOBTITLE">
+                                                            <input type="text" class="form-control mb-3" id="ae-workdays" required placeholder="WORKDAYS">
+                                                            <div class="input-group mb-3">
+                                                                <input type="text" class="form-control" id="ae-email" placeholder="example"
+                                                                    aria-label="Email" aria-describedby="email-addon">
+                                                                <span class="input-group-text" id="email-addon">@valaiscom-ag.ch</span>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <div class="col form-check">
+                                                                    <input class="form-check-input" type="checkbox" id="ae-shareemail">
+                                                                    <label class="form-check-label" for="ae-shareemail">
+                                                                        SHAREEMAIL
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col form-check">
+                                                                    <input class="form-check-input" type="checkbox" id="ae-sharemobphone">
+                                                                    <label class="form-check-label" for="ae-sharemobphone">
+                                                                        SHAREMOBPHONE
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col" style="max-width: 80px;">
+                                                                    <input type="text" class="form-control mb-3 text-center" id="ae-intphone" required
+                                                                        placeholder="INT" maxlength="2">
+                                                                </div>
+                                                                <div class="col">
+                                                                    <div class="input-group mb-3" style="margin-left: -8px;">
+                                                                        <span class="input-group-text" id="extphone-addon">027 948 40</span>
+                                                                        <input type="text" class="form-control" id="ae-extphone"
+                                                                            aria-describedby="extphone-addon" style="max-width: 50px;" maxlength="2"
+                                                                            placeholder="EX">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col" style="margin-left: -80px;">
+                                                                    <input type="text" class="form-control mb-3" id="ae-mobphone" required
+                                                                        placeholder="MOB">
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col" style="margin-left: -80px;">
-                                                        <input type="text" class="form-control mb-3" id="ae-mobphone" required
-                                                            placeholder="MOB">
-                                                    </div>
+                                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Hinzufügen</button>
+                                                    </form>
                                                 </div>
                                             </div>
-                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Hinzufügen</button>
-                                        </form>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                                                    </div>
-                  <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab" tabindex="0">Filter Für die Names Anzeige der Gebietskarte</div>
+                                    </div>
+                                    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab" tabindex="0">
+                                        <p>Abteilungs Datenbank</p>
+                                        <table class="table table-responsiv table-hover table-striped" style="width: 1580px" id="dt">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">LASTNAME</th>
+                                                    <th scope="col">FIRSTNAME</th>
+                                                    <th scope="col" class="text-center">
+                                                        <button type="button" class="btn btn-success" data-bs-target="#managedModalToggle"
+                                                            data-bs-toggle="modal">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                                class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd"
+                                                                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                                            </svg>
+                                                                        </button>
+                                                                        </th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody id="department-table-body">
+                                                                            <!-- Dynamic employee rows will be generated here -->
+                                                                        </tbody>
+                                                                        </table>
+                                                                        <!-- Add D-->
+                                                                        <div class="modal fade" id="managedModalToggle" aria-hidden="true" tabindex="-1">
+                                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header">
+                                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                    </div>
+                                                                                    <div class="modal-body">
+                                                                                        <form id="add-d-form">
+                                                                                            <input type="hidden" id="edit-app-id" value="">
+                                                                                            <div class="mb-3">
+                                                                                                <label for="ad-name" class="form-label">NAME</label>
+                                                                                                <input type="text" class="form-control" id="ad-name" required>
+                                                                                            </div>
+                                                                                            <div class="mb-3">
+                                                                                                <label for="ad-email" class="form-label">EMAIL</label>
+                                                                                                <input type="text" class="form-control" id="ad-email" required>
+                                                                                            </div>
+                                                                                            <button type="submit" class="btn btn-primary">Hinzufügen</button>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- Edit D -->
+                                                                        <div class="modal fade" id="manageedModalToggle" aria-hidden="true" tabindex="-1">
+                                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header">
+                                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                    </div>
+                                                                                    <div class="modal-body">
+                                                                                        <form id="edit-d-form">
+                                                                                            <input type="hidden" id="ed-id">
+                                                                                            <div class="mb-3">
+                                                                                                <label for="ad-name" class="form-label">NAME</label>
+                                                                                                <input type="text" class="form-control" id="ed-name" required>
+                                                                                            </div>
+                                                                                            <div class="mb-3">
+                                                                                                <label for="ed-email" class="form-label">EMAIL</label>
+                                                                                                <input type="text" class="form-control" id="ed-email" required>
+                                                                                            </div>
+                                                                                            <button type="submit" class="btn btn-primary">Aktuallisieren</button>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+            </div>
                   <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">Verkäufer, Regionen Festlegen</div>
                 </div>
               </div>
@@ -222,7 +313,7 @@
                             <label for="edit-app-icon" class="form-label">Icon URL</label>
                             <input type="url" class="form-control" id="edit-app-icon" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Update App</button>
+                        <button type="submit" class="btn btn-primary">Aktuallisieren</button>
                     </form>
 
                 </div>
@@ -298,5 +389,4 @@
         </div>
     </div>
 </body>
-
 </html>
