@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Function to delete an app with confirmation
     window.deleteApp = async (id) => {
         // Confirm deletion with user
-        const confirmDelete = confirm('Are you sure you want to delete this app?');
+        const confirmDelete = confirm('Willst du diese App wirklich löschen?');
 
         if (!confirmDelete) {
             return; // If user cancels, do nothing
@@ -255,12 +255,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         const department = document.getElementById('ae-department').value;
         const jobtitle = document.getElementById('ae-jobtitle').value;
         const workdays = document.getElementById('ae-workdays').value;
-        const email = document.getElementById('ae-email').value;
+        let email = document.getElementById('ae-email').value; // Change from const to let
         const shareemail = document.getElementById('ae-shareemail').checked;
         const intphone = document.getElementById('ae-intphone').value;
-        const extphone = document.getElementById('ae-extphone').value;
+        let extphone = document.getElementById('ae-extphone').value;
         const mobphone = document.getElementById('ae-mobphone').value;
         const sharemobphone = document.getElementById('ae-sharemobphone').checked;
+
+        // Modify the email by appending or prepending a string
+        email = email + "@valaiscom-ag.ch";
+        extphone = "027 948 40 40 " + extphone;
 
         const { data, error } = await supabase.from('employees').insert([{ lastname, firstname, department, jobtitle, workdays, email, shareemail, intphone, extphone, mobphone, sharemobphone }]);
         if (error) {
@@ -309,7 +313,120 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Fetch and render employees on initial load
     fetchAndRenderEmployees();
+    // ------------------
+    // Function to fetch and render departments
+    async function fetchAndRenderDepartments() {
+        const { data, error } = await supabase.from('departments').select('*');
+        if (error) {
+            console.error('Error fetching Departments:', error.message);
+            return;
+        }
 
+        const departmentsTableBody = document.getElementById('department-table-body');
+        departmentsTableBody.innerHTML = '';
+
+        data.forEach(department => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <th scope="row" class="pt-3">${department.id}</th>
+                <td class="pt-3">${department.name}</td>
+                <td class="pt-3">${department.email}</td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-outline-danger" data-bs-target="#manageedModalToggle" data-bs-toggle="modal" onclick="populateEditDeparmentForm(${department.id}, '${department.name}', '${department.email}')">
+                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path
+                            d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z">
+                        </path>
+                        <path fill-rule="evenodd"
+                            d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z">
+                        </path>
+                    </svg>
+                    </button>
+                                            <button class="btn btn-danger ms-2" onclick="deleteDepartment('${department.id}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                            </svg>
+                        </button>
+                </td>
+            `;
+            departmentsTableBody.appendChild(row);
+        });
+        // Function to populate edit employee form
+        window.populateEditDeparmentForm = (id, name, email) => {
+            document.getElementById('ed-id').value = id;
+            document.getElementById('ed-name').value = name;
+            document.getElementById('ed-email').value = email;
+        };
+    }
+
+
+
+    // Function to add a new employee
+    async function addDepartment(event) {
+        event.preventDefault();
+
+        const name = document.getElementById('ad-name').value;
+        const email = document.getElementById('ad-email').value;
+
+        const { data, error } = await supabase.from('departments').insert([{ name, email }]);
+        if (error) {
+            console.error('Error adding department:', error.message);
+            return;
+        }
+
+        fetchAndRenderEmployees();
+        showToast(`Abteilung ${name} Hinzugefügt`);
+        document.getElementById('add-d-form').reset();
+    }
+
+    // Function to edit an existing employee
+    async function editDepartment(event) {
+        event.preventDefault();
+
+        const id = document.getElementById('ed-id').value;
+        const name = document.getElementById('ed-name').value;
+        const email = document.getElementById('ed-email').value;
+
+        const { data, error } = await supabase.from('departments').update({ name, email }).eq('id', id);
+        if (error) {
+            console.error('Error updating Departments:', error.message);
+            return;
+        }
+
+        fetchAndRenderDepartments();
+        showToast(`Abteilung ${name} Aktuallisiert`);
+        $('#editdModalToggle').modal('hide'); // Close the modal
+    }
+
+    // Attach the addEmployee function to the form submit event
+    document.getElementById('add-d-form').addEventListener('submit', addDepartment);
+
+    // Attach the editEmployee function to the form submit event
+    document.getElementById('edit-d-form').addEventListener('submit', editDepartment);
+
+    // Function to delete an app with confirmation
+    window.deleteDepartment = async (id) => {
+        // Confirm deletion with user
+        const confirmDelete = confirm('Willst diese Abteilung wirklich löschen?');
+
+        if (!confirmDelete) {
+            return; // If user cancels, do nothing
+        }
+
+        const { data, error } = await supabase.from('departments').delete().eq('id', id);
+        if (error) {
+            console.error('Error deleting data:', error.message);
+            return;
+        }
+
+        fetchAndRenderApps();
+        showToast(`Abteilung Gelöscht`);
+    };
+
+    // Fetch and render employees on initial load
+    fetchAndRenderDepartments();
+    // ------------------------------
     // Function to populate select element with options from the database
     async function populateSelectOptions() {
         const selectElement = document.getElementById('ae-department');
