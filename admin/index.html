@@ -12,6 +12,9 @@
 </head>
 
 <body class="p-3 m-0 border-0 bd-example m-0 border-0" data-bs-theme="dark">
+    <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <!-- Toasts will be dynamically inserted here -->
+    </div>
     <nav class="navbar navbar-expand-lg bg-body-tertiary rounded-3">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">vc-tools</a>
@@ -30,7 +33,7 @@
                             d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z">
                         </path>
                         <path fill-rule="evenodd"
-                            d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z">
+                            d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z">
                         </path>
                     </svg>
                 </button>
@@ -49,62 +52,109 @@
                   <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Verkäufer</button>
                 </div>
                 <div class="tab-content" id="v-pills-tabContent">
-                  <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
-                    <p>Mitarbeiter Datenbank</p>
-                    <table class="table table-responsiv table-hover table-striped" style="width: 1500px">
-                        <thead>
-                          <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">LASTNAME</th>
-                            <th scope="col">FIRSTNAME</th>
-                            <th scope="col">DEPARTMENT</th>
-                            <th scope="col">JOBTITLE</th>
-                            <th scope="col">WORKDAYS</th>
-                            <th scope="col">EMAIL</th>
-                            <th scope="col">SHAREEMAIL</th>
-                            <th scope="col">INTPHONE</th>
-                            <th scope="col">EXTPHONE</th>
-                            <th scope="col">MOBPHONE</th>
-                            <th scope="col">SHAREMOBPHONE</th>
-                            <th scope="col" class="text-center">  <button type="button" class="btn btn-success">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                        d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
-                                </svg>
-                            </button></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr class="">
-                            <th scope="row" class="pt-3">1</th>
-                            <td class="pt-3">Ebener</td>
-                            <td class="pt-3">Pascal</td>
-                            <td class="pt-3">Geschäftsführung</td>
-                            <td class="pt-3">Geschäftsführer</td>
-                            <td class="pt-3"></td>
-                            <td class="pt-3">p.ebener@valaiscom-ag.ch</td>
-                            <td class="text-center pt-3"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                            <td class="pt-3">11</td>
-                            <td class="pt-3">027 948 40 42</td>
-                            <td class="pt-3">079 865 66 76</td>
-                            <td class="text-center pt-3"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                            <td class="text-center"> <button type="button" class="btn btn-outline-danger" >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" fill="currentColor"
-                                    class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                    <path
-                                        d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z">
-                                    </path>
-                                    <path fill-rule="evenodd"
-                                        d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z">
-                                    </path>
-                                </svg>
-                            </button></td>
-                          </tr>
-                         
-                        </tbody>
-                      </table>
-                </div>           
+                    <div class="tab-pane fade show active overflow-scroll" id="v-pills-home" role="tabpanel"
+                        aria-labelledby="v-pills-home-tab" tabindex="0">
+                        <p>Mitarbeiter Datenbank</p>
+                        <table class="table table-responsiv table-hover table-striped" style="width: 1500px">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">LASTNAME</th>
+                                    <th scope="col">FIRSTNAME</th>
+                                    <th scope="col">DEPARTMENT</th>
+                                    <th scope="col">JOBTITLE</th>
+                                    <th scope="col">WORKDAYS</th>
+                                    <th scope="col">EMAIL</th>
+                                    <th scope="col">SHAREEMAIL</th>
+                                    <th scope="col">INTPHONE</th>
+                                    <th scope="col">EXTPHONE</th>
+                                    <th scope="col">MOBPHONE</th>
+                                    <th scope="col">SHAREMOBPHONE</th>
+                                    <th scope="col" class="text-center">
+                                        <button type="button" class="btn btn-success" data-bs-target="#manageeModalToggle" data-bs-toggle="modal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg"
+                                                viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                            </svg>
+                                        </button>
+                                        </th>
+                                        </tr>
+                                        </thead>
+                            <tbody id="employee-table-body">
+                                <!-- Dynamic employee rows will be generated here -->
+                            </tbody>
+                            </table>
+                        <!-- editnavModal -->
+                        <div class="modal fade" id="manageeModalToggle" aria-hidden="true" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="add-employee-form">
+                                            <div class="mb-3">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control mb-3" id="ae-lastname" required
+                                                            placeholder="LASTNAME">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control mb-3" id="ae-firstname" required
+                                                            placeholder="FIRSTNAME">
+                                                    </div>
+                                                </div>
+                                                <select class="form-select mb-3" id="ae-department" aria-label="Department">
+                                                    <option selected>Department</option>
+                                                </select>
+                                                <input type="text" class="form-control mb-3" id="ae-jobtitle" required placeholder="JOBTITLE">
+                                                <input type="text" class="form-control mb-3" id="ae-workdays" required placeholder="WORKDAYS">
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control" id="ae-email" placeholder="example"
+                                                        aria-label="Email" aria-describedby="email-addon">
+                                                    <span class="input-group-text" id="email-addon">@valaiscom-ag.ch</span>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col form-check">
+                                                        <input class="form-check-input" type="checkbox" id="ae-shareemail">
+                                                        <label class="form-check-label" for="ae-shareemail">
+                                                            SHAREEMAIL
+                                                        </label>
+                                                    </div>
+                                                    <div class="col form-check">
+                                                        <input class="form-check-input" type="checkbox" id="ae-sharemobphone">
+                                                        <label class="form-check-label" for="ae-sharemobphone">
+                                                            SHAREMOBPHONE
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col" style="max-width: 80px;">
+                                                        <input type="text" class="form-control mb-3 text-center" id="ae-intphone" required
+                                                            placeholder="INT" maxlength="2">
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="input-group mb-3" style="margin-left: -8px;">
+                                                            <span class="input-group-text" id="extphone-addon">027 948 40</span>
+                                                            <input type="text" class="form-control" id="ae-extphone"
+                                                                aria-describedby="extphone-addon" style="max-width: 50px;" maxlength="2"
+                                                                placeholder="EX">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col" style="margin-left: -80px;">
+                                                        <input type="text" class="form-control mb-3" id="ae-mobphone" required
+                                                            placeholder="MOB">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Hinzufügen</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                                    </div>
                   <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab" tabindex="0">Filter Für die Names Anzeige der Gebietskarte</div>
                   <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">Verkäufer, Regionen Festlegen</div>
                 </div>
@@ -180,23 +230,73 @@
         </div>
     </div>
     <!-- editnavModal -->
-    <div class="modal fade" id="editnavModalToggle" aria-hidden="true" tabindex="-1">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
+    <!-- Link to the external JavaScript file -->
+    <script type="module" src="../js/app.js"></script>
+    <!-- Edit employee modal -->
+    <div class="modal fade" id="editemployeeModalToggle" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <hr>
-                    <ul id="app-list" class="list-group">
-                        <!-- List of apps will be generated here -->
-                    </ul>
+                    <form id="edit-employee-form">
+                        <input type="hidden" id="ee-id">
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col">
+                                    <input type="text" class="form-control mb-3" id="ee-lastname" required placeholder="LASTNAME">
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control mb-3" id="ee-firstname" required placeholder="FIRSTNAME">
+                                </div>
+                            </div>
+                            <select class="form-select mb-3" id="ee-department" aria-label="Department">
+                                <option selected>Department</option>
+                            </select>
+                            <input type="text" class="form-control mb-3" id="ee-jobtitle" required placeholder="JOBTITLE">
+                            <input type="text" class="form-control mb-3" id="ee-workdays" required placeholder="WORKDAYS">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" id="ee-email" placeholder="example" aria-label="Email"
+                                    aria-describedby="email-addon">
+                    
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col form-check">
+                                    <input class="form-check-input" type="checkbox" id="ee-shareemail">
+                                    <label class="form-check-label" for="ee-shareemail">
+                                        SHAREEMAIL
+                                    </label>
+                                </div>
+                                <div class="col form-check">
+                                    <input class="form-check-input" type="checkbox" id="ee-sharemobphone">
+                                    <label class="form-check-label" for="ee-sharemobphone">
+                                        SHAREMOBPHONE
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" style="max-width: 80px;">
+                                    <input type="text" class="form-control mb-3 text-center" id="ee-intphone" required placeholder="INT"
+                                        maxlength="2">
+                                </div>
+                                <div class="col">
+                                    <div class="input-group mb-3" style="margin-left: -8px;">
+                                        <input type="text" class="form-control" id="ee-extphone" aria-describedby="extphone-addon"
+                                            style="max-width: 150px;" maxlength="2" placeholder="EX">
+                                    </div>
+                                </div>
+                                <div class="col" style="margin-left: -80px;">
+                                    <input type="text" class="form-control mb-3" id="ee-mobphone" required placeholder="MOB">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Aktualisieren</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Link to the external JavaScript file -->
-    <script type="module" src="../js/app.js"></script>
 </body>
 
 </html>
