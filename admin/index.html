@@ -247,7 +247,39 @@
                                                                             </div>
                                                                         </div>
             </div>
-                  <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">Verkäufer, Regionen Festlegen</div>
+                  <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
+                    <div class="nav flex-column nav-pills me-3" id="profile-tablist" role="tablist" aria-orientation="horizontal">
+                        <button class="nav-link active" id="sales-tab" data-bs-toggle="pill" data-bs-target="#sales-pane" type="button" role="tab" aria-controls="sales-pane" aria-selected="true">Verkäufer</button>
+                        <button class="nav-link" id="regions-tab" data-bs-toggle="pill" data-bs-target="#regions-pane" type="button" role="tab" aria-controls="regions-pane" aria-selected="false">Regionen</button>
+                    </div>
+                    <div class="tab-content" id="profile-tabContent">
+                        <div class="tab-pane fade show active" id="sales-pane" role="tabpanel" aria-labelledby="sales-tab" tabindex="0">
+                            <table class="table table-responsive table-hover table-striped" style="width: 1580px" id="employee-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">EMAIL</th>
+                                        <th scope="col" class="text-center">
+                                            <button type="button" class="btn btn-success" data-bs-target="#manageeModalToggle" data-bs-toggle="modal">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                                </svg>
+                                            </button>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="employee-table-body">
+                                    <!-- Dynamic employee rows will be generated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="regions-pane" role="tabpanel" aria-labelledby="regions-tab" tabindex="0">
+                            <!-- Content for regions -->
+                            R
+                        </div>
+                    </div>
+                     
+                  </div>
                 </div>
               </div>
         </div>
@@ -374,7 +406,7 @@
                                 <div class="col">
                                     <div class="input-group mb-3" style="margin-left: -8px;">
                                         <input type="text" class="form-control" id="ee-extphone" aria-describedby="extphone-addon"
-                                            style="max-width: 150px;" maxlength="2" placeholder="EX">
+                                            style="max-width: 150px;" maxlength="100" placeholder="EX">
                                     </div>
                                 </div>
                                 <div class="col" style="margin-left: -80px;">

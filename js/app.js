@@ -424,7 +424,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         showToast(`Abteilung Gelöscht`);
     };
 
-    // Fetch and render employees on initial load
+    // Fetch and render Departments on initial load
     fetchAndRenderDepartments();
     // ------------------------------
     // Function to populate select element with options from the database
