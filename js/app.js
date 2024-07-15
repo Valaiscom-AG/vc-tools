@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Modify the email by appending or prepending a string
         email = email + "@valaiscom-ag.ch";
-        extphone = "027 948 40 40 " + extphone;
+        extphone = "027 948 40 " + extphone;
 
         const { data, error } = await supabase.from('employees').insert([{ lastname, firstname, department, jobtitle, workdays, email, shareemail, intphone, extphone, mobphone, sharemobphone }]);
         if (error) {
@@ -604,7 +604,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        fetchAndRenderApps();
+        fetchAndRenderRegions();
         showToast(`Region Gelöscht`);
     };
 
