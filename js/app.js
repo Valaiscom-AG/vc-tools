@@ -590,7 +590,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Function to delete an app with confirmation
-    window.deletRegion = async (id) => {
+    window.deleteRegion = async (id) => {
         // Confirm deletion with user
         const confirmDelete = confirm('Willst du diese Region wirklich löschen?');
 

@@ -255,6 +255,26 @@
                     </div>
                     <div class="tab-content" id="profile-tabContent">
                         <div class="tab-pane fade show active" id="sales-pane" role="tabpanel" aria-labelledby="sales-tab" tabindex="0">
+                            <div class="search-bar mb-3 mt-3">
+                                <input type="text" id="searchInputRegion" class="form-control w-25" placeholder="Suche..">
+                            </div>
+                            <script>
+                                document.getElementById('searchInputRegion').addEventListener('input', function () {
+                                    let filter = this.value.toLowerCase();
+                                    let rows = document.querySelectorAll('#regions-table tbody tr');
+
+                                    rows.forEach(row => {
+                                        let cells = row.querySelectorAll('td');
+                                        let match = false;
+                                        cells.forEach(cell => {
+                                            if (cell.innerText.toLowerCase().includes(filter)) {
+                                                match = true;
+                                            }
+                                        });
+                                        row.style.display = match ? '' : 'none';
+                                    });
+                                });
+                            </script>
                                             <table class="table table-responsive table-hover table-striped" style="width: 1580px" id="regions-table">
                                                 <thead>
                                                     <tr>
